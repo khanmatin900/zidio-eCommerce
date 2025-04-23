@@ -7,25 +7,25 @@ const FeaturedProducts = () => {
       id: 1,
       name: "Marvel Avengers T-Shirt",
       price: 499,
-      image: "src/assets/images/marvelT-shirt.jpg",
+      image: "/assets/images/marvelT-shirt.jpg",
     },
     {
       id: 2,
       name: "Starry Night Hoodie",
       price: 1299,
-      image: "src/assets/images/sNightHoodie.jpg",
+      image: "/assets/images/sNightHoodie.jpg",
     },
     {
       id: 3,
       name: "DC Batman V-Neck",
       price: 599,
-      image: "src/assets/images/batmanV-neck.jpeg",
+      image: "/assets/images/batmanV-neck.jpeg",
     },
     {
       id: 4,
       name: "Spider-Man Crew Neck",
       price: 899,
-      image: "src/assets/images/spidermanCrewNeck.avif",
+      image: "/assets/images/spidermanCrewNeck.avif",
     },
   ];
 
