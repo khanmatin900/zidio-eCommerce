@@ -1,14 +1,17 @@
 // src/App.jsx
 import React from "react";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/navbar/Navbar";
+import HeroSection from "./components/hero/HeroSection";
+import CategoryLinks from "./components/hero/CategoryLinks";
+import FeaturedProducts from "./components/hero/FeaturedProducts";
 
 function App() {
   return (
-    <div>
+    <div className="bg-gray-900 min-h-screen">
       <Navbar />
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold">Welcome to Shop.com</h1>
-      </div>
+      <HeroSection />
+      <CategoryLinks />
+      <FeaturedProducts />
     </div>
   );
 }
