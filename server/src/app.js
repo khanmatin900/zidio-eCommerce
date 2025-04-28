@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { ApiError } from "./utils/ApiError.js";
 import userRoutes from "./routes/user.route.js";
+import addressRoutes from "./routes/address.route.js";
 const app = express();
 app.use(cors());
 app.use(express.static("public"));
@@ -12,6 +13,7 @@ app.use(cookieParser());
 
 //All routes
 app.use("/api/v1/auth", userRoutes);
+app.use("/api/v1/address", addressRoutes);
 
 app.use((err, req, res, next) => {
   if (err instanceof ApiError) {
