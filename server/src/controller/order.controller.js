@@ -6,6 +6,14 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { AsyncHandler } from "../utils/asyncHandler.js";
 
+//TODO:
+// 1. Create a new order
+// 2. Get all orders for a user
+// 3. Get order details by order ID
+// 4. Update order status
+// 5. Cencel an order (optional)
+// 6. Get all orders (admin only)
+// 7. Get orders by status (admin only)
 
 const createOrder = AsyncHandler(async (req, res) => {
   const { products, paymentMethod, shippingAddress, paymentStatus } = req.body;
@@ -128,71 +136,157 @@ const getUserOrders = AsyncHandler(async (req, res) => {
 });
 
 const getOrderDetails = AsyncHandler(async (req, res) => {
-const { orderId } = req.params;
-const userId = req.user._id;
+  const { orderId } = req.params;
+  const userId = req.user._id;
 
-const orderDetails = await Order.aggregate([
-    { $match: { _id: new mongoose.Types.ObjectId(orderId), userId: new mongoose.Types.ObjectId(userId) } },
+  const orderDetails = await Order.aggregate([
     {
-        $lookup: {
-            from: "products",
-            localField: "product_id",
-            foreignField: "_id",
-            as: "productDetails",
-        },
+      $match: {
+        _id: new mongoose.Types.ObjectId(orderId),
+        userId: new mongoose.Types.ObjectId(userId),
+      },
     },
     {
-        $unwind: {
-            path: "$productDetails",
-            preserveNullAndEmptyArrays: true,
-        },
+      $lookup: {
+        from: "products",
+        localField: "product_id",
+        foreignField: "_id",
+        as: "productDetails",
+      },
     },
     {
-        $lookup: {
-            from: "addresses",
-            localField: "shippingAddress",
-            foreignField: "_id",
-            as: "shippingAddressDetails",
-        },
+      $unwind: {
+        path: "$productDetails",
+        preserveNullAndEmptyArrays: true,
+      },
     },
     {
-        $unwind: {
-            path: "$shippingAddressDetails",
-            preserveNullAndEmptyArrays: true,
-        },
+      $lookup: {
+        from: "addresses",
+        localField: "shippingAddress",
+        foreignField: "_id",
+        as: "shippingAddressDetails",
+      },
     },
     {
-        $project: {
-            _id: 1,
-            userId: 1,
-            product_id: 1,
-            quantity: 1,
-            paymentMethod: 1,
-            shippingAddress: "$shippingAddressDetails",
-            totalAmount: 1,
-            paymentStatus: 1,
-            orderStatus: 1,
-            createdAt: 1,
-            updatedAt: 1,
-            productDetails: {
-                _id: 1,
-                name: 1,
-                price: 1,
-                description: 1,
-                category: 1,
-                discount: 1,
-            },
-        },
+      $unwind: {
+        path: "$shippingAddressDetails",
+        preserveNullAndEmptyArrays: true,
+      },
     },
-]);
+    {
+      $project: {
+        _id: 1,
+        userId: 1,
+        product_id: 1,
+        quantity: 1,
+        paymentMethod: 1,
+        shippingAddress: "$shippingAddressDetails",
+        totalAmount: 1,
+        paymentStatus: 1,
+        orderStatus: 1,
+        createdAt: 1,
+        updatedAt: 1,
+        productDetails: {
+          _id: 1,
+          name: 1,
+          price: 1,
+          description: 1,
+          category: 1,
+          discount: 1,
+        },
+      },
+    },
+  ]);
 
-if (!orderDetails.length) {
+  if (!orderDetails.length) {
     throw new ApiError(404, "Order not found");
-}
+  }
 
-return res.status(200).json(new ApiResponse(200, "Order details", orderDetails[0]));
-}
-);
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Order details", orderDetails[0]));
+});
 
+const updateOrderStatus = AsyncHandler(async (req, res) => {
+  const { orderId } = req.params;
+  const { orderStatus } = req.body;
 
+  if (!orderStatus) {
+    throw new ApiError(400, "Order status is required");
+  }
+
+  const order = await Order.findByIdAndUpdate(
+    orderId,
+    { orderStatus },
+    { new: true }
+  );
+
+  if (!order) {
+    throw new ApiError(404, "Order not found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Order status updated", order));
+});
+
+const cancelOrder = AsyncHandler(async (req, res) => {
+  const { orderId } = req.params;
+
+  const order = await Order.findById(orderId);
+
+  if (!order) {
+    throw new ApiError(404, "Order not found");
+  }
+
+  if (order.orderStatus === "cancelled") {
+    throw new ApiError(400, "Order is already cancelled");
+  }
+
+  order.orderStatus = "cancelled";
+  await order.save();
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Order cancelled successfully", order));
+});
+
+const getAllOrders = AsyncHandler(async (req, res) => {
+  const orders = await Order.find().populate("userId").populate("product_id");
+
+  if (!orders.length) {
+    throw new ApiError(404, "No orders found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "All orders retrieved", orders));
+});
+
+const getOrdersByStatus = AsyncHandler(async (req, res) => {
+  const { status } = req.params;
+
+  const orders = await Order.find({ orderStatus: status })
+    .populate("userId")
+    .populate("product_id");
+
+  if (!orders.length) {
+    throw new ApiError(404, "No orders found with this status");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Orders retrieved by status", orders));
+});
+
+export {
+  createOrder,
+  getUserOrders,
+  getOrderDetails,
+  updateOrderStatus,
+  cancelOrder,
+  getAllOrders,
+  getOrdersByStatus,
+};
 
