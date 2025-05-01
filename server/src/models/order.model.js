@@ -8,19 +8,16 @@ const orderSchema = new mongoose.Schema(
       required: true,
     },
 
-    products: [
-      {
-        product_id: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
-          required: true,
-        },
-        quantity: {
-          type: Number,
-          default: 1,
-        },
-      },
-    ],
+    product_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      default: 1,
+    },
+
     paymentMethod: {
       type: String,
       enum: ["credit_card", "paypal", "bank_transfer"],
