@@ -6,7 +6,7 @@ import userRoutes from "./routes/user.route.js";
 import addressRoutes from "./routes/address.route.js";
 import cartRoutes from "./routes/cart.route.js";
 import orderRoutes from "./routes/order.route.js";
-
+import productRoutes from "./routes/product.route.js";
 const app = express();
 app.use(cors());
 app.use(express.static("public"));
@@ -19,6 +19,7 @@ app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/address", addressRoutes);
 app.use("/api/v1/cart", cartRoutes);
 app.use("/api/v1/order", orderRoutes);
+app.use("/api/v1/product", productRoutes);
 
 app.use((err, req, res, next) => {
   if (err instanceof ApiError) {

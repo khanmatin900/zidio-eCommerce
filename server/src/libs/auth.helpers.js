@@ -19,7 +19,6 @@ const encodeAuthToken = (payload) => {
 };
 
 //decode jwt token
-
 const VerifyJwtToken = AsyncHandler(async (req, res, next) => {
   try {
     const token =
@@ -44,13 +43,24 @@ const VerifyJwtToken = AsyncHandler(async (req, res, next) => {
   }
 });
 
+//verify admin
+const verifyAdmin = AsyncHandler(async (req, res, next) => {
+  if (req.user.role !== "admin") {
+    throw new ApiError(403, "You are not authorized to perform this action !");
+  }
+  next();
+});
+
+
 // Generate OTP
-const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
+const generateOTP = () =>
+  Math.floor(100000 + Math.random() * 900000).toString();
 
 export {
   GenerateHashedPassword,
   CompareHashedPassword,
   encodeAuthToken,
   VerifyJwtToken,
-  generateOTP
+  generateOTP,
+  verifyAdmin
 };
