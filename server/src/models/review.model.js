@@ -29,5 +29,5 @@ const reviewSchema = new mongoose.Schema(
   }
 );
 
-const Review = mongoose.model("Order", reviewSchema);
+const Review = mongoose.model("Review", reviewSchema);
 export { Review };

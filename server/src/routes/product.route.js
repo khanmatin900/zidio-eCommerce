@@ -13,10 +13,10 @@ import { VerifyJwtToken, verifyAdmin } from "../libs/auth.helpers.js";
 import { upload } from "../middlewares/Multer.middleware.js";
 router
   .route("/create")
-  .post(VerifyJwtToken, verifyAdmin, upload.array(Image, 10), createProduct);
+  .post(VerifyJwtToken, verifyAdmin, upload.array("image", 10), createProduct);
 router
   .route("/update/:productId")
-  .put(VerifyJwtToken, verifyAdmin, upload.array(Image, 10), updateProduct);
+  .put(VerifyJwtToken, verifyAdmin, upload.array("image", 10), updateProduct);
 router
   .route("/delete/:productId")
   .delete(VerifyJwtToken, verifyAdmin, deleteProduct);
