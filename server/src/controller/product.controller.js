@@ -193,16 +193,74 @@ const getAllProducts = AsyncHandler(async (req, res) => {
 const getProductById = AsyncHandler(async (req, res) => {
   const { productId } = req.params;
 
-  const product = await Product.findById(productId).populate(
-    "owner",
-    "firstName lastName email"
-  );
-  if (!product) {
+  const product = await Product.aggregate([
+    { $match: { _id: productId } },
+    {
+      $lookup: {
+        from: "reviews",
+        localField: "_id",
+        foreignField: "product",
+        as: "reviews",
+      },
+    },
+    {
+      $unwind: {
+        path: "$reviews",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "reviews.reviewer",
+        foreignField: "_id",
+        as: "reviews.reviewerDetails",
+      },
+    },
+    {
+      $unwind: {
+        path: "$reviews.reviewerDetails",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $group: {
+        _id: "$_id",
+        name: {
+          $first: "$name",
+        },
+        description: {
+          $first: "$description",
+        },
+        price: {
+          $first: "$price",
+        },
+        type: {
+          $first: "$type",
+        },
+        stock: {
+          $first: "$stock",
+        },
+        images: {
+          $first: "$images",
+        },
+        owner: {
+          $first: "$owner",
+        },
+        reviews: {
+          $push: "$reviews",
+        },
+      },
+    },
+  ]);
+
+  if (!product || product.length === 0) {
     throw new ApiError(404, "Product not found");
   }
+
   res
     .status(200)
-    .json(new ApiResponse(200, "Product retrieved successfully", product));
+    .json(new ApiResponse(200, "Product retrieved successfully", product[0]));
 });
 
 const getProductsByType = AsyncHandler(async (req, res) => {
