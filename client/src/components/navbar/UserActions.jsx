@@ -3,7 +3,6 @@ import React, { useState } from "react";
 
 const UserActions = () => {
   const [isSignedIn, setIsSignedIn] = useState(false);
-
   return (
     <div className="flex items-center space-x-1 sm:space-x-4">
       {/* Cart Icon */}
@@ -76,11 +75,8 @@ const UserActions = () => {
           </a>
         </div>
       ) : (
-        <div className="flex items-center max-w-xs w-full">
-          <a
-            href="/signin"
-            className="w-full px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base text-white bg-gray-800 hover:bg-blue-600 rounded-full text-center shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
-          >
+        <div className="flex items-center max-w-xs w-full " >
+          <a className="w-full px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base text-white bg-gray-800 hover:bg-blue-600 rounded-full text-center shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300" href="/sign-up" >
             Sign In
           </a>
         </div>
