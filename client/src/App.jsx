@@ -7,6 +7,7 @@ import CategoryLinks from "./components/hero/CategoryLinks";
 import FeaturedProducts from "./components/hero/FeaturedProducts";
 import Sidebar from "./components/admin/Sidebar";
 import { RiMenuFold2Fill } from "react-icons/ri";
+import AdminTopbar from "./components/admin/Topbar";
 
 function App() {
 	// const authToken = localStorage.getItem("authToken");
@@ -27,21 +28,12 @@ function App() {
 						<Sidebar
 							isOpen={isOpen}
 							setIsOpen={setIsOpen}
-							toggleSidebar={
-								toggleSidebar
-							}
+							toggleSidebar={toggleSidebar}
 						/>
 
 						{/* Main Content */}
-						<div className="flex-1 p-4 ml-2 md:ml-0">
-							<button
-								onClick={
-									toggleSidebar
-								}
-								className="text-white bg-gray-800 p-2 rounded-md md:hidden mb-4"
-							>
-								<RiMenuFold2Fill />
-							</button>
+						<div className="flex-1 p-4  md:ml-0">
+							<AdminTopbar toggleSidebar={toggleSidebar} />
 							<Routes>
 								{/* <Route path="/admin" element={<Sidebar />} />
               <Route path="/admin/dashboard" element={<Sidebar />} />
