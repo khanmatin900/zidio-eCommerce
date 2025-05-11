@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	FaUser,
 	FaChartBar,
@@ -19,19 +19,26 @@ import {
 	MdHeadsetMic,
 	MdOutlinePrivacyTip,
 } from "react-icons/md";
-const Sidebar = () => {
-	const [isOpen, setIsOpen] = useState(true);
-	window.addEventListener("resize", () => {
-		if (window.innerWidth > 768) {
-			setIsOpen(true);
-		} else {
-			setIsOpen(false);
-		}
-	});
+import { useLocation } from "react-router-dom";
 
-	const toggleSidebar = () => {
-		setIsOpen(!isOpen);
-	};
+const Sidebar = ({ isOpen, setIsOpen, toggleSidebar }) => {
+	const location = useLocation();
+
+	useEffect(() => {
+		const handleResize = () => {
+			if (window.innerWidth > 768) {
+				setIsOpen(true);
+			} else {
+				setIsOpen(false);
+			}
+		};
+
+		window.addEventListener("resize", handleResize);
+		handleResize();
+
+		return () => window.removeEventListener("resize", handleResize);
+	}, []);
+
 	const NavItem = [
 		{
 			attribute: "Main Home",
@@ -39,7 +46,7 @@ const Sidebar = () => {
 				{
 					label: "Dashboard",
 					icon: AiFillProduct,
-          url:'/'
+					url: "/",
 				},
 			],
 		},
@@ -49,22 +56,22 @@ const Sidebar = () => {
 				{
 					label: "Orders",
 					icon: TbShoppingBag,
-          url:'/orders'
+					url: "/orders",
 				},
 				{
 					label: "Products",
 					icon: FaBoxOpen,
-          url:'/products'
+					url: "/products",
 				},
 				{
 					label: "Analytics",
 					icon: FaChartBar,
-          url:'/analytics'
+					url: "/analytics",
 				},
 				{
 					label: "Customers",
 					icon: FaUser,
-          url:'/customers'
+					url: "/customers",
 				},
 			],
 		},
@@ -74,12 +81,12 @@ const Sidebar = () => {
 				{
 					label: "Settings",
 					icon: MdSettings,
-          url:'/settings'
+					url: "/settings",
 				},
 				{
 					label: "Users",
 					icon: FaUsersCog,
-          url:'/users'
+					url: "/users",
 				},
 			],
 		},
@@ -89,17 +96,17 @@ const Sidebar = () => {
 				{
 					label: "Help Center",
 					icon: MdHelpOutline,
-          url:'/help'
+					url: "/help",
 				},
 				{
 					label: "FAQs",
 					icon: MdHeadsetMic,
-          url:'/faqs'
+					url: "/faqs",
 				},
 				{
 					label: "Privacy Policy",
 					icon: MdOutlinePrivacyTip,
-          url:'/privacy'
+					url: "/privacy",
 				},
 			],
 		},
@@ -129,62 +136,64 @@ const Sidebar = () => {
 			],
 		},
 	];
-	// {
-	//   label: "Logout",
-	//   icon: <FaSignOutAlt className="text-lg" />,
-	// },
+
 	return (
-		<div className="flex bg-gray-900 text-white">
-			{/* Sidebar */}
-			<div
-				className={`${
-					isOpen ? "w-64 p-5" : "w-0 p-0"
-				} bg-gray-800 h-screen overflow-y-scroll text-white transition-all duration-300 fixed md:relative z-10 `}
-			>
-				<div className="flex items-center justify-between p-4">
-					<h1
-						className={`${
-							isOpen
+		<div
+			className={`${
+				isOpen ? "w-64 p-5" : "w-0 p-0"
+			} bg-gray-800 h-screen overflow-y-scroll transition-all duration-300 fixed md:relative z-10`}
+		>
+			<div className="flex items-center justify-between p-4">
+				<h1
+					className={`${
+						isOpen ? "block" : "hidden"
+					} text-xl font-bold`}
+				>
+					Admin Panel
+				</h1>
+				<button
+					onClick={toggleSidebar}
+					className="text-white focus:outline-none md:hidden"
+				>
+					<RiMenuUnfold2Fill />
+				</button>
+			</div>
+
+			{NavItem.map((item, index) => (
+				<div key={index} className="mt-4">
+					<h2 className="text-gray-400 text-sm px-2 uppercase font-bold">
+						{item.attribute}
+					</h2>
+					<ul
+						className={`mt-2 ${
+							item.pages[0].label
 								? "block"
-								: "hidden"
-						} text-xl font-bold`}
+								: "flex"
+						}`}
 					>
-						Admin Panel
-					</h1>
-					<button
-						onClick={toggleSidebar}
-						className="text-white focus:outline-none md:hidden"
-					>
-						<RiMenuUnfold2Fill />
-					</button>
-				</div>
-				{NavItem.map((item, index) => (
-					<div key={index} className="mt-4">
-						<h2 className="text-gray-400 text-sm px-2 uppercase font-bold">
-							{item.attribute}
-						</h2>
-						<ul
-							className={`mt-2 ${
-								item.pages[0]
-									.label
-									? "block"
-									: "flex "
-							}`}
-						>
-							{item.pages.map(
-								(
-									page,
-									index
-								) => (
+						{item.pages.map(
+							(page, index) => {
+								const isActive =
+									location.pathname ===
+									page.url;
+								return (
 									<li
 										key={
 											index
 										}
-										className="flex items-center p-2 hover:text-blue-500/50 cursor-pointer transition font-semibold"
+										className={`flex items-center p-2 transition font-semibold cursor-pointer hover:text-blue-500 ${
+											isActive
+												? "text-blue-400"
+												: "text-white"
+										}`}
 									>
 										{page.label ? (
-											<a href={page.url} className="flex items-center">
-												{" "}
+											<a
+												href={
+													page.url
+												}
+												className="flex items-center w-full"
+											>
 												<page.icon className="text-xl" />
 												<span
 													className={`${
@@ -200,45 +209,30 @@ const Sidebar = () => {
 											</a>
 										) : (
 											<a
-												className="inline "
 												href={
 													page.url
 												}
 												target="_blank"
 												rel="noopener noreferrer"
+												className="inline"
 											>
-												{" "}
 												<page.icon className="text-xl" />
 											</a>
 										)}
 									</li>
-								)
-							)}
-						</ul>
-					</div>
-				))}
+								);
+							}
+						)}
+					</ul>
+				</div>
+			))}
 
-				<button className="mt-4 cursor-pointer transition font-semibold flex items-center p-2 text-red-500/50">
-					<FaSignOutAlt className="text-xl" />
-					<sapn className=" text-sm px-2 uppercase font-bold">
-						Logout
-					</sapn>
-				</button>
-			</div>
-
-			{/* Main Content */}
-			<div className="flex-1 p-4 ml-2 md:ml-0">
-				<button
-					onClick={toggleSidebar}
-					className="text-white bg-gray-800 p-2 rounded-md md:hidden mb-4"
-				>
-					<RiMenuFold2Fill />
-				</button>
-				<h1 className="text-2xl font-bold">
-					Welcome to Admin Panel
-				</h1>
-				{/* Add your main content here */}
-			</div>
+			<button className="mt-4 flex items-center p-2 text-red-500 hover:text-red-400 transition font-semibold">
+				<FaSignOutAlt className="text-xl" />
+				<span className="text-sm px-2 uppercase font-bold">
+					Logout
+				</span>
+			</button>
 		</div>
 	);
 };
