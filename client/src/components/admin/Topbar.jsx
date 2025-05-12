@@ -5,6 +5,7 @@ import {
 	FaCog,
 	FaUser,
 	FaLifeRing,
+	FaSearch,
 } from "react-icons/fa";
 import { RiMenuFoldLine } from "react-icons/ri";
 import { PiBellRingingFill } from "react-icons/pi";
@@ -56,11 +57,16 @@ const AdminTopbar = ({ toggleSidebar }) => {
 					</button>
 				</div>
 
-				<input
-					type="text"
-					placeholder="Search..."
-					className="bg-gray-700 text-white px-3 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 sm:w-36 w-48 md:w-64"
-				/>
+				<div className="relative w-full">
+					<span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+						<FaSearch />
+					</span>
+					<input
+						type="text"
+						placeholder="Search Here"
+						className="pl-10 pr-3 py-2 text-sm rounded-md border border-gray-600 bg-gray-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-600 w-full"
+					/>
+				</div>
 			</div>
 
 			<div

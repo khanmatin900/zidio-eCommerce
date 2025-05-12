@@ -141,7 +141,7 @@ const Sidebar = ({ isOpen, setIsOpen, toggleSidebar }) => {
 		<div
 			className={`${
 				isOpen ? "w-64 p-5" : "w-0 p-0"
-			} bg-gray-800 h-screen overflow-y-scroll transition-all duration-300 fixed md:relative z-50`}
+			} bg-gray-800 h-screen overflow-y-scroll transition-all duration-300 fixed md:sticky top-0 z-50`}
 		>
 			<div className="flex items-center justify-between p-4">
 				<h1

@@ -8,6 +8,7 @@ import FeaturedProducts from "./components/hero/FeaturedProducts";
 import Sidebar from "./components/admin/Sidebar";
 import { RiMenuFold2Fill } from "react-icons/ri";
 import AdminTopbar from "./components/admin/Topbar";
+import Dashboard from "./components/admin/Dashboard";
 
 function App() {
 	// const authToken = localStorage.getItem("authToken");
@@ -35,12 +36,27 @@ function App() {
 						<div className="flex-1 p-4  md:ml-0">
 							<AdminTopbar toggleSidebar={toggleSidebar} />
 							<Routes>
-								{/* <Route path="/admin" element={<Sidebar />} />
-              <Route path="/admin/dashboard" element={<Sidebar />} />
-              <Route path="/admin/users" element={<Sidebar />} />
-              <Route path="/admin/products" element={<Sidebar />} />
-              <Route path="/admin/analytics" element={<Sidebar />} />
-              <Route path="/admin/logout" element={<Sidebar />} /> */}
+								<Route path="/" element={<Dashboard />} />
+								<Route
+									path="/admin/dashboard"
+									element={<Sidebar />}
+								/>
+								<Route
+									path="/admin/users"
+									element={<Sidebar />}
+								/>
+								<Route
+									path="/admin/products"
+									element={<Sidebar />}
+								/>
+								<Route
+									path="/admin/analytics"
+									element={<Sidebar />}
+								/>
+								<Route
+									path="/admin/logout"
+									element={<Sidebar />}
+								/>
 							</Routes>
 						</div>
 					</div>
