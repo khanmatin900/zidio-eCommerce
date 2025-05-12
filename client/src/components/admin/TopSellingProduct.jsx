@@ -1,4 +1,4 @@
-import { PieChart, Pie, Cell } from "recharts";
+import { PieChart, Pie, Cell, Tooltip } from "recharts";
 import { IoMdTrendingUp, IoMdTrendingDown } from "react-icons/io";
 
 export default function TopSellingCategories() {
@@ -45,7 +45,7 @@ export default function TopSellingCategories() {
 		{ value: 3, label: "Last Year" },
 	];
 	return (
-		<div className="bg-gray-800 text-white p-6 rounded-xl w-full max-w-sm shadow-lg">
+		<div className="bg-gray-800 text-white p-6 rounded-xl w-full max-w-sm shadow-lg h-full">
 			<div className="mb-4 flex justify-between items-center">
 				<h2 className="text-lg font-semibold">
 					Top Selling categories
@@ -71,7 +71,7 @@ export default function TopSellingCategories() {
 						data={data}
 						cx="50%"
 						cy="50%"
-						innerRadius={80}
+						innerRadius={60}
 						outerRadius={100}
 						paddingAngle={0}
 						dataKey="value"
@@ -81,6 +81,20 @@ export default function TopSellingCategories() {
 							<Cell key={`cell-${index}`} fill={COLORS[index]} />
 						))}
 					</Pie>
+					<Tooltip
+						content={({ payload }) => {
+							if (payload && payload.length) {
+								const { name, stock } = payload[0].payload;
+								return (
+									<div className="bg-black py-2 px-4 rounded-lg text-white">
+										<p>{name}</p>
+										<p>{stock} in stock</p>
+									</div>
+								);
+							}
+							return null;
+						}}
+					/>
 				</PieChart>
 				<div className="absolute text-white font-semibold text-xl">
 					<p className="text-center">Total Sales</p>

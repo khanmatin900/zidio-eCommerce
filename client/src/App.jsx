@@ -9,6 +9,8 @@ import Sidebar from "./components/admin/Sidebar";
 import { RiMenuFold2Fill } from "react-icons/ri";
 import AdminTopbar from "./components/admin/Topbar";
 import Dashboard from "./components/admin/Dashboard";
+import Analytics from "./components/admin/Analytics";
+import Footer from "./components/admin/Footer";
 
 function App() {
 	// const authToken = localStorage.getItem("authToken");
@@ -50,14 +52,15 @@ function App() {
 									element={<Sidebar />}
 								/>
 								<Route
-									path="/admin/analytics"
-									element={<Sidebar />}
+									path="/analytics"
+									element={<Analytics />}
 								/>
 								<Route
 									path="/admin/logout"
 									element={<Sidebar />}
 								/>
 							</Routes>
+							<Footer/>
 						</div>
 					</div>
 				) : (

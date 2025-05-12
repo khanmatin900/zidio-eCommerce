@@ -26,14 +26,14 @@ const data = [
 
 export default function OrderStatistics() {
 	return (
-		<div className="bg-gray-800 text-white p-6 rounded-xl shadow-lg w-full">
+		<div className="bg-gray-800 text-white p-6 rounded-xl shadow-lg w-full h-full">
 			<div className="flex justify-between items-center mb-4 flex-col md:flex-row">
-				<h2 className="text-lg font-semibold">Order Statistics</h2>
-				<div className="flex gap-2">
+				<h2 className="text-sm md:text-lg font-semibold text-nowrap">Order Statistics</h2>
+				<div className="flex md:gap:0 gap-2">
 					{["Day", "Week", "Month", "Year"].map((label, index) => (
 						<button
 							key={index}
-							className={`px-4 py-1 text-sm rounded ${
+							className={`md:px-2 px-4 py-1 text-sm rounded ${
 								label === "Day"
 									? "bg-purple-600 text-white"
 									: "bg-gray-800 text-gray-400 hover:bg-gray-700"
@@ -42,7 +42,7 @@ export default function OrderStatistics() {
 							{label}
 						</button>
 					))}
-					<button className="px-3 py-1 text-sm bg-[#735dff] hover:bg-[#735dff9c]  text-gray-300  rounded border border-gray-700 ">
+					<button className="text-nowrap px-3 py-1 text-sm bg-[#735dff] hover:bg-[#735dff9c]  text-gray-300  rounded border border-gray-700 ">
 						Export ↗
 					</button>
 				</div>
