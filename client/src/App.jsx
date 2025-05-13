@@ -11,6 +11,7 @@ import AdminTopbar from "./components/admin/Topbar";
 import Dashboard from "./components/admin/Dashboard";
 import Analytics from "./components/admin/Analytics";
 import Footer from "./components/admin/Footer";
+import Customers from "./components/admin/Customers";
 
 function App() {
 	// const authToken = localStorage.getItem("authToken");
@@ -48,8 +49,8 @@ function App() {
 									element={<Sidebar />}
 								/>
 								<Route
-									path="/admin/products"
-									element={<Sidebar />}
+									path="/customers"
+									element={<Customers />}
 								/>
 								<Route
 									path="/analytics"
