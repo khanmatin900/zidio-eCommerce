@@ -12,6 +12,7 @@ import Dashboard from "./components/admin/Dashboard";
 import Analytics from "./components/admin/Analytics";
 import Footer from "./components/admin/Footer";
 import Customers from "./components/admin/Customers";
+import Users from "./components/admin/Users";
 
 function App() {
 	// const authToken = localStorage.getItem("authToken");
@@ -40,14 +41,7 @@ function App() {
 							<AdminTopbar toggleSidebar={toggleSidebar} />
 							<Routes>
 								<Route path="/" element={<Dashboard />} />
-								<Route
-									path="/admin/dashboard"
-									element={<Sidebar />}
-								/>
-								<Route
-									path="/admin/users"
-									element={<Sidebar />}
-								/>
+
 								<Route
 									path="/customers"
 									element={<Customers />}
@@ -56,12 +50,9 @@ function App() {
 									path="/analytics"
 									element={<Analytics />}
 								/>
-								<Route
-									path="/admin/logout"
-									element={<Sidebar />}
-								/>
+								<Route path="/users" element={<Users />} />
 							</Routes>
-							<Footer/>
+							<Footer />
 						</div>
 					</div>
 				) : (
