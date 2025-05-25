@@ -111,7 +111,7 @@ Functionality and UI references:
 Clone the project
 
 ```bash
-  git clone https://github.com/PJPhukan/zidio-eCommerce
+  git clone https://github.com/khanmatin900/zidio-eCommerce
 ```
 
 Go to the project directory
@@ -123,8 +123,13 @@ Go to the project directory
 Install dependencies (Client side)
 
 ```bash
+  
   cd client
   npm install
+  npm install framer-motion
+  npm install react-router-dom
+  npm install -D tailwindcss postcss autoprefixer
+  npx tailwindcss init -p
 ```
 
 Install dependencies (Server side)
