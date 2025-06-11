@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { AsyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
-import { User } from "../model/user.model.js";
+import { User } from "../models/user.model.js";
 //generate hashed password
 const GenerateHashedPassword = async (password) => {
   return await bcrypt.hash(password, 10);
@@ -19,7 +19,6 @@ const encodeAuthToken = (payload) => {
 };
 
 //decode jwt token
-
 const VerifyJwtToken = AsyncHandler(async (req, res, next) => {
   try {
     const token =
@@ -44,9 +43,24 @@ const VerifyJwtToken = AsyncHandler(async (req, res, next) => {
   }
 });
 
+//verify admin
+const verifyAdmin = AsyncHandler(async (req, res, next) => {
+  if (req.user.role !== "admin") {
+    throw new ApiError(403, "You are not authorized to perform this action !");
+  }
+  next();
+});
+
+
+// Generate OTP
+const generateOTP = () =>
+  Math.floor(100000 + Math.random() * 900000).toString();
+
 export {
   GenerateHashedPassword,
   CompareHashedPassword,
   encodeAuthToken,
   VerifyJwtToken,
+  generateOTP,
+  verifyAdmin
 };
